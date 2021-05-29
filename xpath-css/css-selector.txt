@@ -1,0 +1,25 @@
+h1                          
+.intro                      
+#location
+div.intro
+.bold
+.bold:nth-child(1)      ?
+li[data-identifier='7']
+[data-identifier='7']
+a[href^='https']
+a[href$='fr']
+a[href*='fr']
+*
+
+div.intro p
+div.intro *
+div.intro > *
+div.intro p, span
+div.intro (p), (span) ?
+div.intro + *
+div.intro ~ p
+
+li:nth-child(1)
+li:nth-child(1), li:nth-child(3)
+li:nth-child(odd)
+li:nth-child(even)
