@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 from pymongo import MongoClient
  
 def insert_to_db(list_currencies):
-    client = MongoClient("mongodb://ahmed:testtest@cluster0-shard-00-00-pbhxl.mongodb.net:27017,cluster0-shard-00-01-pbhxl.mongodb.net:27017,cluster0-shard-00-02-pbhxl.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true")
+    client = MongoClient("mongodb://kevin:qwer1234@cluster0-shard-00-00.4dcub.mongodb.net:27017,cluster0-shard-00-01.4dcub.mongodb.net:27017,cluster0-shard-00-02.4dcub.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-11azj9-shard-0&authSource=admin&retryWrites=true&w=majority")
     db = client["currencies"]
     collection = db["price"]
     for currency in list_currencies:
