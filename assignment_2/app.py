@@ -2,9 +2,17 @@ import requests
 from lxml import html
 import re
 from urllib.parse import urljoin
+from pymongo import MongoClient
 
 all_movies = []
 target_urls = ['https://www.imdb.com/search/title/?genres=drama&groups=top_250&sort=user_rating,desc&ref_=adv_prv']
+
+def insert_to_db(list_movies):
+    client = MongoClient("mongodb://kevin:qwer1234@cluster0-shard-00-00.4dcub.mongodb.net:27017,cluster0-shard-00-01.4dcub.mongodb.net:27017,cluster0-shard-00-02.4dcub.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-11azj9-shard-0&authSource=admin&retryWrites=true&w=majority")
+    db = client['imdb-top-250']
+    collection = db['movie']
+    collection.insert(list_movies)
+    client.close()
 
 def scrape_page(url):
 
@@ -51,8 +59,12 @@ def scrape_page(url):
     except IndexError:
         pass
 
+
+
+
 while len(target_urls) > 0:
     scrape_page(target_urls.pop())
+insert_to_db(all_movies)
 
 print(all_movies)
 print(len(all_movies))
