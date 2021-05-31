@@ -11,7 +11,18 @@ def insert_to_db(list_movies):
     client = MongoClient("mongodb://kevin:qwer1234@cluster0-shard-00-00.4dcub.mongodb.net:27017,cluster0-shard-00-01.4dcub.mongodb.net:27017,cluster0-shard-00-02.4dcub.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-11azj9-shard-0&authSource=admin&retryWrites=true&w=majority")
     db = client['imdb-top-250']
     collection = db['movie']
-    collection.insert(list_movies)
+    for movie in list_movies:
+        movie['_id'] = movie['title']
+        exists = collection.find_one({'_id': movie['_id']})
+        if exists and (exists != movie):
+            collection.replace_one({'_id': movie['_id']}, movie)
+            print("Old item: {}. New item: {}".format(exists, movie))
+        elif not exists:
+            collection.insert_one(movie)
+        else:
+            pass
+
+    # collection.insert(list_movies)
     client.close()
 
 def scrape_page(url):
@@ -66,5 +77,5 @@ while len(target_urls) > 0:
     scrape_page(target_urls.pop())
 insert_to_db(all_movies)
 
-print(all_movies)
+# print(all_movies)
 print(len(all_movies))
