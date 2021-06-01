@@ -2,6 +2,7 @@ import requests
 import json
 from fake_useragent import UserAgent
 from pprint import pprint
+from urllib.parse import urljoin
 
 parsed_products = []
 
@@ -44,13 +45,13 @@ for product in j['products']:
         'id': prod_info['prodId'],
         'name': prod_info["productName"],
         'size': prod_info["productSize"],
-        'url': prod_info["productURL"],
+        'url': urljoin(base=url, url=prod_info["productURL"]),
     }
 
     pprint(pr)
 
     parsed_products.append(pr)
 
-
-
+pprint(parsed_products)
+print(len(parsed_products))
 pass
