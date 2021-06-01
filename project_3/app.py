@@ -3,6 +3,7 @@ import json
 from fake_useragent import UserAgent
 from pprint import pprint
 from urllib.parse import urljoin
+import sqlite3
 
 url = "https://www.walgreens.com/productsearch/v3/products/search"
 
@@ -62,6 +63,39 @@ while current_page <= total_pages:
     current_page += 1
     collect(j)
 
-pprint(parsed_products)
-print(len(parsed_products))
+connection = sqlite3.connect('project_3/product.db')
+c = connection.cursor()
+try:
+    c.execute('''
+        CREATE TABLE products (
+            id TEXT PRIMATY KEY,
+            name TEXT,
+            url TEXT,
+            size TEXT,
+            price TEXT,
+            image TEXT
+        )
+    ''')
+    connection.commit()
+except sqlite3.OperationalError as e:
+    print(e)
+
+for product in parsed_products:
+    c.execute('''
+        REPLACE INTO products (id, name, url, size, price, image) VALUES (
+            ?,?,?,?,?,?
+        )
+    ''',
+        (
+            product['id'],
+            product['name'],
+            product['url'],
+            product['size'],
+            product['price'],
+            product['img']
+        )
+    )
+connection.commit()
+connection.close()
+
 pass
