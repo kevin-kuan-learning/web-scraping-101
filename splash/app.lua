@@ -11,6 +11,8 @@ function main(splash, args)
     button = splash:select_all("input[name='btnK']")[2]
     assert(button.mouse_click())
     assert(splash:wait(1))
+
+    splash:set_viewport_full()
     
     return {
       png = splash:png(),
