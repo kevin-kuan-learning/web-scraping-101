@@ -5,6 +5,8 @@ function main(splash, args)
     --  ['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36'
     --}
     --splash:set_custom_headers(headers)
+
+    -- callback called on each request sent
     splash:on_request(function(request)
           request:set_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36')
     end)
