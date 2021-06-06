@@ -1,0 +1,14 @@
+item                //div[contains(@class, 'lister-item-content')]
+
+title               ./h3/a/text()
+
+year_of_release     ./h3/span[contains(@class, 'lister-item-year')]/text()  # use re to get year
+
+duration            .//span[contains(@class, 'runtime')]/text()  # use re to get number
+
+rating              .//div[contains(@class, 'ratings-imdb-rating')]/strong/text()
+
+
+next page           //a[contains(@class, 'next-page')]/@href
+
+href="/search/title/?genres=drama&amp;groups=top_250&amp;sort=user_rating,desc&amp;start=51&amp;ref_=adv_prv"
