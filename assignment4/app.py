@@ -1,7 +1,7 @@
 import requests
 from lxml import html
 import json
-
+import argparse
 
 
 def scrape(url):
@@ -65,7 +65,20 @@ def output(dict_list):
     with open('assignment4/upcoming_flights.json', 'w') as f:
         json.dump(dict_list, f, indent='    ')
 
+def get_flightcode():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        '--flightcode',
+        default='JBU1623'
+    )
+
+    args = parser.parse_args()
+    print(args.flightcode)
+
+    return args.flightcode
 
 if __name__ == '__main__':
-    upcoming_flights = scrape('https://flightaware.com/live/flight/JBU1623')
+    flightcode = get_flightcode()
+    upcoming_flights = scrape('https://flightaware.com/live/flight/{}'.format(flightcode))
     output(upcoming_flights)
