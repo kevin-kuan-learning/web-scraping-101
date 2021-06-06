@@ -9,12 +9,13 @@ lua = r'''
   splash.images_enabled = false
   assert(splash:go(args.url))
   assert(splash:wait(0.5))
-  
+  return splash:html()
   '''
 
-resp = requests.post('http://localhost:8050/run', data = {
-    'lua_source': '',
+resp = requests.post('http://localhost:8050/run', json = {
+    'lua_source': lua,
     'url':'https://www.gearbest.com/flash-sale.html'
 })
 
 print(resp.text)
+pass
