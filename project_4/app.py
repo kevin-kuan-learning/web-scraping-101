@@ -1,4 +1,8 @@
 import requests
+from lxml import html
+
+all_products = []
+
 lua = r'''
   headers = {
     ['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36',
@@ -17,5 +21,22 @@ resp = requests.post('http://localhost:8050/run', json = {
     'url':'https://www.gearbest.com/flash-sale.html'
 })
 
-print(resp.text)
+# print(resp.text)
+
+tree = html.fromstring(resp.text)
+
+for node in tree.xpath("//div[@class='goodsItem_content']"):
+    def get(s):
+        return s[0].strip()
+
+    product = {
+        'name': get(node.xpath("//div[@class='goodsItem_content']//div[@class='goodsItem_title']/a/text()")),
+        'url': get(node.xpath("//div[@class='goodsItem_content']//div[@class='goodsItem_title']/a/@href")),
+        'original_price': get(node.xpath("//div[@class='goodsItem_content']//span[contains(@class, 'goodsItem_newPrice')]/text()")),
+        'discounted_proce': get(node.xpath(" //div[@class='goodsItem_content']//del[contains(@class, 'goodsItem_deletePrice')]/del/text()")),
+    }
+
+    # print(product)
+    all_products.append(product)
+
 pass
