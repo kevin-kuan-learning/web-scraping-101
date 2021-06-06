@@ -1,0 +1,8 @@
+//div[@itemscope='itemscope' and @data-listing-id]
+
+    .//h3//span[@itemprop='name']/text()
+    .//span[@itemprop='price]/text()
+    .//div[@class='dne-itemtile-detail']/a[@itemprop='url']/@href
+
+    //div[@itemscope='itemscope' and @data-listing-id]//span[contains(@class, 'itemcard-hotness-red')]
+    //div[@itemscope='itemscope' and @data-listing-id]//span[contains(@class, 'itemtile-price-bold')]
