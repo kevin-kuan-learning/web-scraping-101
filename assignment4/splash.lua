@@ -1,7 +1,8 @@
 function main(splash, args)
   
   splash:set_custom_headers({
-    ['Cookie'] = 'w_locale=en_US'
+    ['Cookie'] = 'w_locale=en_US',
+    ['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36'
   })
   splash.private_mode_enabled = false
   splash.images_enabled = false
