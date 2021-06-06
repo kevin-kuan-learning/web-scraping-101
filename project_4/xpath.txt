@@ -1,0 +1,8 @@
+//div[@class='goodsItem_content']
+
+//div[@class='goodsItem_content']//div[@class='goodsItem_title']/a/@href
+//div[@class='goodsItem_content']//div[@class='goodsItem_title']/a/text()
+
+//div[@class='goodsItem_content']//span[contains(@class, 'goodsItem_newPrice')]/text()
+
+ //div[@class='goodsItem_content']//del[contains(@class, 'goodsItem_deletePrice')]/del/text()

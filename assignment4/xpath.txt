@@ -1,0 +1,20 @@
+//div[@id='flightPageActivityLog']//div[@class='flightPageDataTable'][1]//div[contains(@class,'flightPageDataRowTall')]
+
+./div[4]/span/text()
+
+./div[3]//div[@class='flightPageActivityLogDataPart']/span[2]/text()
+./div[3]//div[@class='flightPageActivityLogDataPart']/span[1]//span/text()
+
+./div[1]//em/text()[1]  ./div[1]//em/text()[2]
+
+./div[2]//div[@class='flightPageActivityLogDataPart']/span[2]/text()
+./div[2]//div[@class='flightPageActivityLogDataPart']/span[1]//span/text()
+
+./div[5]/em/text()
+
+
+//div[@id='flightPageActivityLog']//div[@class='flightPageDataTable'][1]//div[contains(@class,'flightPageDataRowTall')]/div[2]//div[@class='flightPageActivityLogDataPart']/span[2]/text()
+
+
+
+
