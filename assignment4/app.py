@@ -2,59 +2,70 @@ import requests
 from lxml import html
 import json
 
-upcoming_flights = []
 
 
-splash_url = 'http://localhost:8050/run' # not https, append /run
+def scrape(url):
 
-lua = r'''
-  splash:set_custom_headers({
-    ['Cookie'] = 'w_locale=en_US'
-  })
-  splash.private_mode_enabled = false
-  splash.images_enabled = false
-  assert(splash:go(args.url))
-  assert(splash:wait(1))
-  return splash:html()
-'''
+    upcoming_flights = []
 
-resp = requests.post(splash_url,json={
-    'lua_source': lua,
-    'url': 'https://flightaware.com/live/flight/JBU1623'
-})
+    splash_url = 'http://localhost:8050/run' # not https, append /run
 
-print(resp.text)
-pass
+    lua = r'''
+    splash:set_custom_headers({
+        ['Cookie'] = 'w_locale=en_US'
+    })
+    splash.private_mode_enabled = false
+    splash.images_enabled = false
+    assert(splash:go(args.url))
+    assert(splash:wait(1))
+    return splash:html()
+    '''
 
-tree = html.fromstring(resp.text)
-for node_flight in tree.xpath("//div[@id='flightPageActivityLog']//div[@class='flightPageDataTable'][1]//div[contains(@class,'flightPageDataRowTall')]"):
-    def get(list_of_strings):
-        try:
-            return list_of_strings[0].strip()
-        except IndexError as e:
-            raise e
-    
-    flight = {
-        'Aircraft': get(node_flight.xpath('./div[4]/span/text()')),
-        'Arrival Airport': get(node_flight.xpath("./div[3]//div[@class='flightPageActivityLogDataPart']/span[2]/text()")),
-        'Arrival time': get(node_flight.xpath("./div[3]//div[@class='flightPageActivityLogDataPart']/span[1]//span/text()")).replace('\xa0', ' '),
-        'Date': "{} {}".format(
-            get(node_flight.xpath("./div[1]//em/text()[1]")),
-            get(node_flight.xpath("./div[1]//em/text()[2]"))
-        ),
-        'Departure Airport': get(node_flight.xpath("./div[2]//div[@class='flightPageActivityLogDataPart']/span[2]/text()")),
-        'Departure Time': get(node_flight.xpath("./div[2]//div[@class='flightPageActivityLogDataPart']/span[1]//span/text()")).replace('\xa0', ' '),
-        'Duration': get(node_flight.xpath("./div[5]/em/text()")),
-    }
-    print(flight)
-    upcoming_flights.append(flight)
+    resp = requests.post(splash_url,json={
+        'lua_source': lua,
+        'url': url
+    })
+
+    print(resp.text)
+    pass
+
+    tree = html.fromstring(resp.text)
+    for node_flight in tree.xpath("//div[@id='flightPageActivityLog']//div[@class='flightPageDataTable'][1]//div[contains(@class,'flightPageDataRowTall')]"):
+        def get(list_of_strings):
+            try:
+                return list_of_strings[0].strip()
+            except IndexError as e:
+                raise e
+        
+        flight = {
+            'Aircraft': get(node_flight.xpath('./div[4]/span/text()')),
+            'Arrival Airport': get(node_flight.xpath("./div[3]//div[@class='flightPageActivityLogDataPart']/span[2]/text()")),
+            'Arrival time': get(node_flight.xpath("./div[3]//div[@class='flightPageActivityLogDataPart']/span[1]//span/text()")).replace('\xa0', ' '),
+            'Date': "{} {}".format(
+                get(node_flight.xpath("./div[1]//em/text()[1]")),
+                get(node_flight.xpath("./div[1]//em/text()[2]"))
+            ),
+            'Departure Airport': get(node_flight.xpath("./div[2]//div[@class='flightPageActivityLogDataPart']/span[2]/text()")),
+            'Departure Time': get(node_flight.xpath("./div[2]//div[@class='flightPageActivityLogDataPart']/span[1]//span/text()")).replace('\xa0', ' '),
+            'Duration': get(node_flight.xpath("./div[5]/em/text()")),
+        }
+        print(flight)
+        upcoming_flights.append(flight)
+
+    return upcoming_flights
 
 
-print(len(upcoming_flights))
-with open('assignment4/upcoming_flights.txt', 'w') as f:
-    for u in upcoming_flights:
-        json.dump(u, f, indent='    ')
-        f.write('\n')
+def output(dict_list):
+    print(len(dict_list))
+    with open('assignment4/upcoming_flights.txt', 'w') as f:
+        for u in dict_list:
+            json.dump(u, f, indent='    ')
+            f.write('\n')
 
-with open('assignment4/upcoming_flights.json', 'w') as f:
-    json.dump(upcoming_flights, f, indent='    ')
+    with open('assignment4/upcoming_flights.json', 'w') as f:
+        json.dump(dict_list, f, indent='    ')
+
+
+if __name__ == '__main__':
+    upcoming_flights = scrape('https://flightaware.com/live/flight/JBU1623')
+    output(upcoming_flights)
